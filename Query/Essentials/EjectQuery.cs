@@ -2,30 +2,30 @@ namespace Zorro.Query.Essentials;
 
 public static class EjectQuery
 {
-    public static (QueryContext, TEject) Eject<TEntry, TEject>(
-        this (QueryContext context, TEntry?) carriage,
-        Func<(QueryContext, TEntry?), (QueryContext, TEject value)> expression, out TEject value
+    public static ArgQueryContext<TEject> Eject<TEject>(
+        this QueryContext context,
+        Func<QueryContext, ArgQueryContext<TEject>> convertor, out TEject value
     )
     {
-        value = expression.Invoke(carriage).value;
-        return (carriage.context, value);
+        value = convertor.Invoke(context).arg;
+        return context.PassArg(value);
     }
 
-    public static (QueryContext, TEject) Eject<TEntry, TEject>(
-        this (QueryContext context, TEntry) carriage,
+    public static ArgQueryContext<TEject> Eject<TEject>(
+        this QueryContext context,
         TEject newValue, out TEject value
     )
     {
         value = newValue;
-        return (carriage.context, value);
+        return context.PassArg(value);
     }
 
-    public static (QueryContext, TEject) Eject<TEject>(
-        this (QueryContext context, TEject value) carriage,
+    public static ArgQueryContext<TEject> Eject<TEject>(
+        this ArgQueryContext<TEject> context,
         out TEject value
     )
     {
-        value = carriage.value;
-        return (carriage.context, value);
+        value = context.arg;
+        return context.PassArg(value);
     }
 }

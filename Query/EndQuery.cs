@@ -4,7 +4,7 @@ namespace Zorro.Query;
 
 public static class EndQuery
 {
-    public static IActionResult End(this ANY_TUPLE input)
+    public static IActionResult End(this QueryContext input)
     {
         return new OkResult();
     }

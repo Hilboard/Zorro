@@ -2,18 +2,19 @@ namespace Zorro.Query.Essentials;
 
 public static class TryQuery
 {
-    public static (QueryContext, TExit?) Try<TEntry, TExit>(
-        this (QueryContext context, TEntry?) carriage,
-        Func<(QueryContext, TEntry?), (QueryContext, TExit?)> expression
+    public static ArgQueryContext<TReturn> Try<TEntry, TReturn>(
+        this ArgQueryContext<TEntry> context,
+        Func<ArgQueryContext<TEntry>, ArgQueryContext<TReturn>> expression
     )
+        where TReturn : notnull
     {
         try
         {
-            return expression.Invoke(carriage);
+            return expression.Invoke(context);
         }
         catch 
         {
-            return (carriage.context, default(TExit));
+            return context.PassArg(default(TReturn)!);
         }
     }
 }

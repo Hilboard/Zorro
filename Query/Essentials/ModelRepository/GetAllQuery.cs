@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Zorro.Data;
 using Zorro.Data.Interfaces;
 
@@ -5,15 +6,27 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class GetAllQuery
 {
-    public static (QueryContext, IEnumerable<TEntity>) GetAll<TEntity>(this ANY_TUPLE carriage)
+    public static ArgQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this QueryContext context)
         where TEntity : class, IEntity
     {
-        var repo = carriage.context.http.RequestServices.GetService<ModelRepository<TEntity>>();
+        var repo = context.GetService<ModelRepository<TEntity>>();
         if (repo is null)
         {
             throw new Exception();
         }
 
-        return (carriage.context, repo.GetAll(carriage.context.inclusionContext));
+        return context.PassArg(repo.GetAll(context.inclusion));
+    }
+
+    public static ArgQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this QueryContext context, Expression<Func<TEntity, bool>> predicate)
+        where TEntity : class, IEntity
+    {
+        var repo = context.GetService<ModelRepository<TEntity>>();
+        if (repo is null)
+        {
+            throw new Exception();
+        }
+
+        return context.PassArg(repo.GetAll(predicate, context.inclusion));
     }
 }

@@ -2,28 +2,28 @@ namespace Zorro.Query.Essentials;
 
 public static class ExecuteQuery
 {
-    public static (QueryContext, TReturn) Execute<TReturn, TEntry>(
-        this (QueryContext context, TEntry entry) carriage,
+    public static ArgQueryContext<TReturn> Execute<TEntry, TReturn>(
+        this ArgQueryContext<TEntry> context,
         Func<TEntry, TReturn> function
     )
     {
-        return (carriage.context, function(carriage.entry));
+        return context.PassArg(function(context.arg));
     }
 
-    public static (QueryContext, TReturn) Execute<TReturn>(
-        this ANY_TUPLE carriage,
+    public static ArgQueryContext<TReturn> Execute<TReturn>(
+        this QueryContext context,
         Func<TReturn> function
     )
     {
-        return (carriage.context, function());
+        return context.PassArg(function());
     }
 
-    public static ANY_TUPLE Execute(
-        this ANY_TUPLE carriage,
+    public static QueryContext Execute(
+        this QueryContext context,
         Action function
     )
     {
-        function.Invoke();
-        return (carriage.context, null);
+        function();
+        return context;
     }
 }

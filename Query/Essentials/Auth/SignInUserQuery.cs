@@ -50,30 +50,30 @@ public static class SignInUserQuery
     public delegate void AuthenticationMethod(QueryContext context, IUserSignInForm signInForm, object user);
     public static AuthenticationMethod? DefaultAuthenticationMethod { get; set; } = null;
 
-    public static (QueryContext, TUser) SignInUser<TUser, TKey>(
-        this ANY_TUPLE carriage,
+    public static ArgQueryContext<TUser> SignInUser<TUser, TKey>(
+        this QueryContext context,
         IUserSignInForm signInForm
     )
         where TUser : IdentityUser<TKey>, IEntity, new()
         where TKey : IEquatable<TKey>
     {
-        var userRepo = carriage.context.http.RequestServices.GetRequiredService<ModelRepository<TUser>>();
-        TUser? targetUser = null;
+        var userRepo = context.GetService<ModelRepository<TUser>>();
+        TUser? user = null;
 
         if (signInForm is PhoneSingInForm phoneSingInForm)
         {
-            targetUser = userRepo.Find(u => u.PhoneNumber == phoneSingInForm.phoneNumber);
+            user = userRepo.Find(u => u.PhoneNumber == phoneSingInForm.phoneNumber);
         }
         else if (signInForm is EmailSignInForm emailSingInForm)
         {
-            targetUser = userRepo.Find(u => u.Email == emailSingInForm.email);
+            user = userRepo.Find(u => u.Email == emailSingInForm.email);
         }
         else if (signInForm is UsernameSingInForm usernameSingInForm)
         {
-            targetUser = userRepo.Find(u => u.UserName == usernameSingInForm.userName);
+            user = userRepo.Find(u => u.UserName == usernameSingInForm.userName);
         }
 
-        if (targetUser is null)
+        if (user is null)
         {
             throw new QueryException(statusCode: StatusCodes.Status400BadRequest);
         }
@@ -83,8 +83,8 @@ public static class SignInUserQuery
             throw new QueryException(statusCode: StatusCodes.Status400BadRequest);
         }
 
-        var userManager = carriage.context.http.RequestServices.GetRequiredService<UserManager<TUser>>();
-        var pwCheckStatus = userManager.CheckPasswordAsync(targetUser, signInForm.password).GetAwaiter().GetResult();
+        var userManager = context.GetService<UserManager<TUser>>();
+        var pwCheckStatus = userManager.CheckPasswordAsync(user, signInForm.password).GetAwaiter().GetResult();
         if (pwCheckStatus is false)
         {
             throw new QueryException(statusCode: StatusCodes.Status400BadRequest);
@@ -92,14 +92,14 @@ public static class SignInUserQuery
 
         if (DefaultAuthenticationMethod is null)
         {
-            var signInManager = carriage.context.http.RequestServices.GetRequiredService<SignInManager<TUser>>();
-            signInManager.SignInAsync(targetUser, signInForm.rememberMe ?? false).GetAwaiter().GetResult();
+            var signInManager = context.GetService<SignInManager<TUser>>();
+            signInManager.SignInAsync(user, signInForm.rememberMe ?? false).GetAwaiter().GetResult();
         }
         else
         {
-            DefaultAuthenticationMethod(carriage.context, signInForm, targetUser);
+            DefaultAuthenticationMethod(context, signInForm, user);
         }
 
-        return (carriage.context, targetUser);
+        return context.PassArg(user);
     }
 }

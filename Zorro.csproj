@@ -22,11 +22,9 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-	<Folder Include="Data\" />
     <Folder Include="Enums\" />
 	<Folder Include="Extensions\" />
 	<Folder Include="Middlewares\" />
-	<Folder Include="Query\" />
 	<Folder Include="Secrets\" />
     <Folder Include="Services\" />
   </ItemGroup>

@@ -1,24 +1,43 @@
-namespace Zorro.Query.Essentials;
+﻿namespace Zorro.Query.Essentials;
 
 public static class ForEachQuery
 {
-    public static (QueryContext, IEnumerable<TExit>) ForEach<TItem, TEntry, TExit>(
-        this (QueryContext context, TEntry) carriage,
-        TItem[] items,
-        Func<TItem, (QueryContext, TItem), (QueryContext, TExit)> expression
+    public static ArgQueryContext<IEnumerable<TReturn>> ForEach<TItem, TReturn>(
+        this QueryContext context,
+        IEnumerable<TItem> items,
+        Func<TItem, ArgQueryContext<TItem>, ArgQueryContext<TReturn>> expression
     )
     {
-        if (items.Length == 0)
+        if (items.Count() == 0)
         {
-            return (carriage.context, Array.Empty<TExit>());
+            return context.PassArg(Enumerable.Empty<TReturn>());
         }
 
-        IList<TExit> results = new List<TExit>();
-        foreach (var item in items)
+        IEnumerable<TReturn> results = Enumerable.Empty<TReturn>();
+        foreach(TItem item in items)
         {
-            results.Add(expression.Invoke(item, (carriage.context, item)).Item2);
+            results = results.Append(expression(item, context.PassArg(item)).arg);
         }
 
-        return (carriage.context, results);
+        return context.PassArg(results);
+    }
+
+    public static QueryContext ForEach<TItem>(
+        this QueryContext context,
+        IEnumerable<TItem> items,
+        Func<TItem, ArgQueryContext<TItem>, QueryContext> expression
+    )
+    {
+        if (items.Count() == 0)
+        {
+            return context;
+        }
+
+        foreach (TItem item in items)
+        {
+            expression(item, context.PassArg(item));
+        }
+
+        return context;
     }
 }

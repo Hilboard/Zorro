@@ -4,10 +4,8 @@ namespace Zorro.Query;
 
 public static class StartQueryQuery
 {
-    public static ANY_TUPLE StartQuery(this ControllerBase controller)
+    public static ArgQueryContext<object?> StartQuery(this ControllerBase controller)
     {
-        QueryContext context = new QueryContext(controller.HttpContext);
-
-        return (context, null);
+        return new QueryContext(controller.HttpContext, new Dictionary<string, bool?>()).PassArg<object?>(null);
     }
 }

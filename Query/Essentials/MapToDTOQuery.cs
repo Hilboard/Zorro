@@ -4,12 +4,11 @@ namespace Zorro.Query.Essentials;
 
 public static class MapToDTOQuery
 {
-    public static (QueryContext, object?) MapToDTO<TDTOable, TDTO>(
-        this (QueryContext context, TDTOable entity) input,
-        object? argsObject = null
+    public static ArgQueryContext<TDTO> MapToDTO<TEntity, TDTO>(
+        this ArgQueryContext<TEntity> context
     )
-        where TDTOable : class, IDataTransferObject<TDTO>
+        where TEntity : class, IDTO<TDTO>
     {
-        return (input.context, input.entity.MapToDTO(argsObject));
+        return context.PassArg(context.arg.MapToDTO(context));
     }
 }

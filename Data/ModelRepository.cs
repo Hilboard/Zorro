@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿global using InclusionContext = System.Collections.Generic.IDictionary<string, bool?>;
+
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,7 +11,6 @@ using Zorro.Extensions;
 namespace Zorro.Data;
 
 using Inclusion = string[];
-using InclusionContext = IDictionary<string, bool?>;
 
 public class ModelRepository<TEntity>
     where TEntity : class, IEntity
@@ -163,6 +164,12 @@ public class ModelRepository<TEntity>
     {
         var entry = set.Add(instance);
         return Save() ? FindById(entry.Entity.Id, inclusionContext) : null;
+    }
+
+    public bool AddRange(TEntity[] instances, InclusionContext? inclusionContext = null)
+    {
+        set.AddRange(instances);
+        return Save();
     }
 
     public bool Update(ref TEntity instance, InclusionContext? inclusionContext = null)

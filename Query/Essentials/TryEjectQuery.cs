@@ -2,21 +2,21 @@ namespace Zorro.Query.Essentials;
 
 public static class TryEjectQuery
 {
-    public static (QueryContext, TExit?) TryEject<TEntry, TExit>(
-        this (QueryContext context, TEntry?) carriage,
-        Func<(QueryContext, TEntry?), (QueryContext, TExit? value)> expression, out TExit? value
+    public static ArgQueryContext<TReturn> TryEject<TEntry, TReturn>(
+        this ArgQueryContext<TEntry> context,
+        Func<ArgQueryContext<TEntry>, ArgQueryContext<TReturn>> expression, out TReturn value
     )
+        where TReturn : notnull
     {
         try
         {
-            var exitCarriage = expression(carriage);
-            value = exitCarriage.value;
-            return exitCarriage;
+            value = expression(context).arg;
         }
         catch
         {
-            value = default;
-            return (carriage.context, value);
+            value = default!;
         }
+
+        return context.PassArg(value);
     }
 }

@@ -2,8 +2,8 @@ namespace Zorro.Query.Essentials;
 
 public static class SwitchToQuery
 {
-    public static (QueryContext, TEntry) SwitchTo<TEntry>(this ANY_TUPLE carriage, TEntry focusObject)
+    public static ArgQueryContext<TEntry> SwitchTo<TEntry>(this QueryContext context, TEntry focusObject)
     {
-        return (carriage.context, focusObject);
+        return context.PassArg(focusObject);
     }
 }

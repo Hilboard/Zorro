@@ -7,13 +7,13 @@ public static class GenerateIdQuery
 {
     private static readonly Random _rng = new Random();
 
-    public static (QueryContext, int) GenerateId<TEntity>(
-        this ANY_TUPLE carriage, 
+    public static ArgQueryContext<int> GenerateId<TEntity>(
+        this QueryContext context, 
         out int id
     )
         where TEntity : class, IEntity
     {
-        var repo = carriage.context.http.RequestServices.GetService<ModelRepository<TEntity>>();
+        var repo = context.GetService<ModelRepository<TEntity>>();
         if (repo is null)
         {
             throw new Exception();
@@ -28,6 +28,6 @@ public static class GenerateIdQuery
 
         id = idAttempt;
 
-        return (carriage.context, idAttempt);
+        return context.PassArg(idAttempt);
     }
 }

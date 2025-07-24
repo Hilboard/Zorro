@@ -2,17 +2,17 @@ namespace Zorro.Query.Essentials;
 
 public static class SetInclusionValueQuery
 {
-    public static ANY_TUPLE SetInclusion(this ANY_TUPLE carriage, string variableName, bool? value = true)
+    public static QueryContext SetInclusion(this QueryContext context, string variableName, bool? value = true)
     {
-        if (carriage.context.inclusionContext.ContainsKey(variableName) is false)
+        if (context.inclusion.ContainsKey(variableName) is false)
         {
-            carriage.context.inclusionContext.Add(variableName, value);
+            context.inclusion.Add(variableName, value);
         }
         else
         {
-            carriage.context.inclusionContext[variableName] = value;
+            context.inclusion[variableName] = value;
         }
 
-        return carriage;
+        return context;
     }
 }

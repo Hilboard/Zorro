@@ -5,14 +5,14 @@ namespace Zorro.Query.Essentials.BucketRepository;
 
 public static class UploadQuery
 {
-    public static ANY_TUPLE Upload<TBucketRepository, TClient, TBucket, TItem>(
-        this ANY_TUPLE carriage,
+    public static QueryContext Upload<TBucketRepository, TClient, TBucket, TItem>(
+        this QueryContext context,
         IFormFile file,
         string filePath
     )
         where TBucketRepository : BucketRepository<TClient, TBucket, TItem>
     {
-        var bucketRepo = carriage.context.http.RequestServices.GetService<TBucketRepository>();
+        var bucketRepo = context.GetService<TBucketRepository>();
         if (bucketRepo is null)
         {
             throw new Exception();
@@ -24,6 +24,6 @@ public static class UploadQuery
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
 
-        return carriage;
+        return context;
     }
 }

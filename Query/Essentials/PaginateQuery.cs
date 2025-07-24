@@ -2,27 +2,15 @@ namespace Zorro.Query.Essentials;
 
 public static class PaginateQuery
 {
-    public static (QueryContext, IEnumerable<TEntity>) Paginate<TEntity>(
-        this (QueryContext context, IEnumerable<TEntity> items) carriage,
+    public static ArgQueryContext<object> Paginate<TEntity>(
+        this ArgQueryContext<IEnumerable<TEntity>> context,
         int startIndex,
         int pageSize,
         bool reverse = false
     )
     {
-        var items = Paginate(carriage.items, startIndex, pageSize, out int endIndex, out int totalCount, reverse);
-        return (carriage.context, items);
-    }
-
-    public static (QueryContext, object) PaginateAndWrap<TEntity>(
-        this (QueryContext context, IEnumerable<TEntity?> items) carriage,
-        int startIndex,
-        int pageSize,
-        bool reverse = false
-    )
-    {
-        var items = Paginate(carriage.items, startIndex, pageSize, out int endIndex, out int totalCount, reverse);
-
-        return (carriage.context, WrapResult());
+        var items = Paginate(context.arg, startIndex, pageSize, out int endIndex, out int totalCount, reverse);
+        return context.PassArg(WrapResult());
 
         object WrapResult()
         {

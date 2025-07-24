@@ -1,16 +1,31 @@
-global using ANY_TUPLE = (Zorro.Query.QueryContext context, object? lastValue);
+using System.Collections.Concurrent;
+using System.Security.Claims;
 
 namespace Zorro.Query;
 
 public class QueryContext
 {
-    public IDictionary<string, bool?> inclusionContext { get; private set; }
+    public InclusionContext inclusion { get; private set; }
 
-    public HttpContext http { get; init; } = null!;
+    protected HttpContext http { get; init; } = null!;
 
-    public QueryContext(HttpContext http)
+    public ClaimsPrincipal User => http.User;
+
+    private readonly ConcurrentDictionary<Type, object> _serviceCache = new();
+
+    public QueryContext(HttpContext http, InclusionContext inclusion)
     {
         this.http = http;
-        inclusionContext = new Dictionary<string, bool?>();
+        this.inclusion = inclusion;
+    }
+
+    public TService GetService<TService>() where TService : notnull
+    {
+        return (TService)_serviceCache.GetOrAdd(typeof(TService), http.RequestServices.GetRequiredService);
+    }
+
+    public ArgQueryContext<TOutArg> PassArg<TOutArg>(TOutArg outArg)
+    {
+        return new ArgQueryContext<TOutArg>(outArg, http, inclusion);
     }
 }

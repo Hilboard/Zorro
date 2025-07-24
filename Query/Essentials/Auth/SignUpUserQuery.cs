@@ -60,13 +60,13 @@ public static class SignUpUserQuery
         public required string confirmPassword { get; set; }
     }
 
-    public static (QueryContext, TUser) SignUpUser<TUser, TKey>(this ANY_TUPLE carriage, IUserSignUpForm signUpForm)
+    public static ArgQueryContext<TUser> SignUpUser<TUser, TKey>(this QueryContext context, IUserSignUpForm signUpForm)
         where TUser : IdentityUser<TKey>, IEntity, new()
         where TKey : IEquatable<TKey>
     {
         // Clear last token from cookies
 
-        var userManager = carriage.context.http.RequestServices.GetRequiredService<UserManager<TUser>>();
+        var userManager = context.GetService<UserManager<TUser>>();
 
         string? phoneNumber = null;
         string? userName = null;
@@ -135,7 +135,7 @@ public static class SignUpUserQuery
             }
         }
 
-        var userRepo = carriage.context.http.RequestServices.GetRequiredService<ModelRepository<TUser>>();
-        return (carriage.context, userRepo.Find(u => u.Id.Equals(user.Id))!);
+        var userRepo = context.GetService<ModelRepository<TUser>>();
+        return context.PassArg(userRepo.Find(u => u.Id.Equals(user.Id))!);
     }
 }

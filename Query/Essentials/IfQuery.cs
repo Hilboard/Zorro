@@ -2,29 +2,29 @@ namespace Zorro.Query.Essentials;
 
 public static class IfQuery
 {
-    public static (QueryContext, TEntry?) If<TEntry>(
-        this (QueryContext context, TEntry? value) carriage,
+    public static QueryContext If<TEntry>(
+        this ArgQueryContext<TEntry> context,
         bool condition,
-        Func<(QueryContext, TEntry?), (QueryContext, object? value)> expression
+        Action<ArgQueryContext<TEntry>> expression
     )
     {
         if (condition)
         {
-            expression.Invoke(carriage);
+            expression.Invoke(context);
         }
-        return (carriage.context, carriage.value);
+        return context;
     }
 
-    public static (QueryContext, TEntry?) If<TEntry>(
-        this (QueryContext context, TEntry? value) carriage,
+    public static QueryContext If<TEntry>(
+        this ArgQueryContext<TEntry> context,
         Func<TEntry?, bool> predicate,
-        Func<(QueryContext, TEntry?), (QueryContext, object? value)> expression
+        Action<ArgQueryContext<TEntry>> expression
     )
     {
-        if (predicate(carriage.value))
+        if (predicate(context.arg))
         {
-            expression.Invoke(carriage);
+            expression.Invoke(context);
         }
-        return (carriage.context, carriage.value);
+        return context;
     }
 }

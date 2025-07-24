@@ -2,19 +2,19 @@ namespace Zorro.Query.Essentials;
 
 public static class LoopQuery
 {
-    public static (QueryContext, IEnumerable<TExit>) Loop<TEntry, TExit>(
-        this (QueryContext context, TEntry) carriage,
+    public static ArgQueryContext<IEnumerable<TReturn>> Loop<TReturn>(
+        this QueryContext context,
         int loopCount,
-        Func<int, (QueryContext, int), (QueryContext, TExit)> expression
+        Func<int, QueryContext, ArgQueryContext<TReturn>> expression
     )
     {
-        IList<TExit> results = new List<TExit>();
+        IEnumerable<TReturn> results = Enumerable.Empty<TReturn>();
         int i = 0;
         for (; i < loopCount; i++)
         {
-            results.Add(expression.Invoke(i, (carriage.context, i)).Item2);
+            results = results.Append(expression.Invoke(i, context).arg);
         }
 
-        return (carriage.context, results);
+        return context.PassArg(results);
     }
 }
