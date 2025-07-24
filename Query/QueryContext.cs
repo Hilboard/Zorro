@@ -10,6 +10,8 @@ public class QueryContext
     protected HttpContext http { get; init; } = null!;
 
     public ClaimsPrincipal User => http.User;
+    public IRequestCookieCollection RequestCookies => http.Request.Cookies;
+    public IResponseCookies ResponseCookies => http.Response.Cookies;
 
     private readonly ConcurrentDictionary<Type, object> _serviceCache = new();
 
