@@ -17,4 +17,19 @@ public static class LoopQuery
 
         return context.PassArg(results);
     }
+
+    public static QueryContext Loop(
+        this QueryContext context,
+        int loopCount,
+        Func<int, QueryContext, QueryContext> expression
+    )
+    {
+        int i = 0;
+        for (; i < loopCount; i++)
+        {
+            expression.Invoke(i, context);
+        }
+
+        return context;
+    }
 }
