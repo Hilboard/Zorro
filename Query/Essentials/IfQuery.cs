@@ -2,10 +2,10 @@ namespace Zorro.Query.Essentials;
 
 public static class IfQuery
 {
-    public static QueryContext If<TEntry>(
-        this ArgQueryContext<TEntry> context,
+    public static QueryContext If(
+        this QueryContext context,
         bool condition,
-        Action<ArgQueryContext<TEntry>> expression
+        Action<QueryContext> expression
     )
     {
         if (condition)
