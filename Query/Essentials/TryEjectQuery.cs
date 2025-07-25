@@ -19,4 +19,22 @@ public static class TryEjectQuery
 
         return context.PassArg(value);
     }
+
+    public static ArgQueryContext<TReturn> TryEject<TReturn>(
+        this QueryContext context,
+        Func<QueryContext, ArgQueryContext<TReturn>> expression, out TReturn value
+    )
+        where TReturn : notnull
+    {
+        try
+        {
+            value = expression(context).arg;
+        }
+        catch
+        {
+            value = default!;
+        }
+
+        return context.PassArg(value);
+    }
 }
