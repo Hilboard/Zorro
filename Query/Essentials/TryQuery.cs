@@ -17,4 +17,19 @@ public static class TryQuery
             return context.PassArg(default(TReturn)!);
         }
     }
+
+    public static QueryContext Try<TEntry>(
+        this ArgQueryContext<TEntry> context,
+        Func<QueryContext, QueryContext> expression
+    )
+    {
+        try
+        {
+            return expression.Invoke(context);
+        }
+        catch
+        {
+            return context;
+        }
+    }
 }
