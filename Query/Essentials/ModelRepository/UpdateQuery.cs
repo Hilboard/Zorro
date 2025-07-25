@@ -17,10 +17,15 @@ public static class UpdateQuery
         }
         repo.context.ChangeTracker.Clear();
 
-        var entity = repo.FindById(id);
+        TEntity? entity = repo.FindById(id);
         if (entity is null)
         {
             throw new QueryException(statusCode: StatusCodes.Status404NotFound);
+        }
+
+        if (entity.UpdateFill(form) is false)
+        {
+            throw new QueryException(statusCode: StatusCodes.Status400BadRequest);
         }
 
         var updateStatus = repo.Update(ref entity, context.inclusion);
