@@ -2,7 +2,7 @@ namespace Zorro.Query.Essentials;
 
 public static class PaginateQuery
 {
-    public static ArgQueryContext<object> Paginate<TEntity>(
+    public static ArgQueryContext<Pagination<TEntity>> Paginate<TEntity>(
         this ArgQueryContext<IEnumerable<TEntity>> context,
         int startIndex,
         int pageSize,
@@ -10,18 +10,9 @@ public static class PaginateQuery
     )
     {
         var items = Paginate(context.arg, startIndex, pageSize, out int endIndex, out int totalCount, reverse);
-        return context.PassArg(WrapResult());
-
-        object WrapResult()
-        {
-            return new
-            {
-                items,
-                totalCount,
-                endIndex,
-                lastPage = endIndex == totalCount - 1,
-            };
-        }
+        bool lastPage = endIndex == totalCount - 1;
+        Pagination<TEntity> paginationObj = new Pagination<TEntity>(items, totalCount, endIndex, lastPage);
+        return context.PassArg(paginationObj);
     }
 
     private static IEnumerable<TEntity> Paginate<TEntity>(
@@ -53,5 +44,21 @@ public static class PaginateQuery
 
         items = items.Skip(startIndex).Take(pageSize);
         return items;
+    }
+
+    public class Pagination<TItem>
+    {
+        public IEnumerable<TItem> items { get; set; }
+        public int totalCount { get; set; }
+        public int endIndex { get; set; }
+        public bool lastPage { get; set; }
+
+        public Pagination(IEnumerable<TItem> items, int totalCount, int endIndex, bool lastPage)
+        {
+            this.items = items;
+            this.totalCount = totalCount;
+            this.endIndex = endIndex;
+            this.lastPage = lastPage;
+        }
     }
 }
