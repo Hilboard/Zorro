@@ -4,14 +4,9 @@ public static class SetInclusionValueQuery
 {
     public static QueryContext SetInclusion(this QueryContext context, string variableName, bool? value = true)
     {
-        if (context.inclusion.ContainsKey(variableName) is false)
-        {
-            context.inclusion.Add(variableName, value);
-        }
-        else
-        {
-            context.inclusion[variableName] = value;
-        }
+        context.inclusion.TryAdd(variableName, value);
+
+        context.TryLogElapsedTime(nameof(SetInclusionValueQuery));
 
         return context;
     }

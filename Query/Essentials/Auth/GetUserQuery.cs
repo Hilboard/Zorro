@@ -30,6 +30,8 @@ public static class GetUserQuery
             throw new Exception();
         }
 
+        context.TryLogElapsedTime(nameof(GetUserQuery));
+
         return context.PassArg(user);
     }
 }

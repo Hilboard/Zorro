@@ -17,6 +17,8 @@ public static class TryEjectQuery
             value = default!;
         }
 
+        context.TryLogElapsedTime(nameof(TryEjectQuery));
+
         return context.PassArg(value);
     }
 
@@ -34,6 +36,8 @@ public static class TryEjectQuery
         {
             value = default!;
         }
+
+        context.TryLogElapsedTime(nameof(TryEjectQuery));
 
         return context.PassArg(value);
     }

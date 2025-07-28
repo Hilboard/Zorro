@@ -20,12 +20,9 @@ public static class ZorroDI
     /// </summary>
     /// <param name="builderArgs">Program entry arguments</param>
     /// <returns>Services collection</returns>
-    public static IServiceCollection InitRaw(string[] builderArgs, bool logging = true)
+    public static IServiceCollection InitRaw(string[] builderArgs, LogLevel minimumLogLevel = LogLevel.Information)
     {
         builder = WebApplication.CreateBuilder(builderArgs);
-
-        if (logging)
-            builder.Services.AddLogging();
 
         if (builder.Environment.IsDevelopment())
             environment = Enums.Environment.Development;
@@ -33,6 +30,11 @@ public static class ZorroDI
             environment = Enums.Environment.Staging;
         else if (builder.Environment.IsProduction())
             environment = Enums.Environment.Production;
+
+        builder.Services.AddLogging(builder =>
+        {
+            builder.SetMinimumLevel(minimumLogLevel);
+        });
 
         return builder.Services;
     }

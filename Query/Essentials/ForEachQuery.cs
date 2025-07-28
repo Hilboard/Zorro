@@ -19,6 +19,8 @@ public static class ForEachQuery
             results = results.Append(expression(item, context.PassArg(item)).arg);
         }
 
+        context.TryLogElapsedTime(nameof(ForEachQuery));
+
         return context.PassArg(results);
     }
 
@@ -37,6 +39,8 @@ public static class ForEachQuery
         {
             expression(item, context.PassArg(item));
         }
+
+        context.TryLogElapsedTime(nameof(ForEachQuery));
 
         return context;
     }

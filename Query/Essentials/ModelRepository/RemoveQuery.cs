@@ -22,6 +22,8 @@ public static class RemoveQuery
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
 
+        context.TryLogElapsedTime(nameof(RemoveQuery));
+
         return context;
     }
 
@@ -46,6 +48,8 @@ public static class RemoveQuery
         {
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
+
+        context.TryLogElapsedTime(nameof(RemoveQuery));
 
         return context;
     }

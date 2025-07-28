@@ -15,7 +15,11 @@ public static class GetAllQuery
             throw new Exception();
         }
 
-        return context.PassArg(repo.GetAll(context.inclusion));
+        var items = repo.GetAll(context.inclusion);
+
+        context.TryLogElapsedTime(nameof(GetAllQuery));
+
+        return context.PassArg(items);
     }
 
     public static ArgQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this QueryContext context, Expression<Func<TEntity, bool>> predicate)
@@ -27,6 +31,10 @@ public static class GetAllQuery
             throw new Exception();
         }
 
-        return context.PassArg(repo.GetAll(predicate, context.inclusion));
+        var items = repo.GetAll(predicate, context.inclusion);
+
+        context.TryLogElapsedTime(nameof(GetAllQuery));
+
+        return context.PassArg(items);
     }
 }

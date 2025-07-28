@@ -12,6 +12,9 @@ public static class IfQuery
         {
             expression.Invoke(context);
         }
+
+        context.TryLogElapsedTime(nameof(IfQuery));
+
         return context;
     }
 
@@ -25,6 +28,9 @@ public static class IfQuery
         {
             expression.Invoke(context);
         }
+
+        context.TryLogElapsedTime(nameof(IfQuery));
+
         return context;
     }
 }

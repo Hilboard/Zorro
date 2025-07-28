@@ -22,6 +22,8 @@ public static class FindQuery
             throw new QueryException(statusCode: StatusCodes.Status404NotFound);
         }
 
+        context.TryLogElapsedTime(nameof(FindQuery));
+
         return context.PassArg(entity);
     }
 }

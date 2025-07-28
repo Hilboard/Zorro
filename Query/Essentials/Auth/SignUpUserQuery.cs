@@ -136,6 +136,10 @@ public static class SignUpUserQuery
         }
 
         var userRepo = context.GetService<ModelRepository<TUser>>();
-        return context.PassArg(userRepo.Find(u => u.Id.Equals(user.Id))!);
+        user = userRepo.Find(u => u.Id.Equals(user.Id))!;
+
+        context.TryLogElapsedTime(nameof(SignUpUserQuery));
+
+        return context.PassArg(user);
     }
 }

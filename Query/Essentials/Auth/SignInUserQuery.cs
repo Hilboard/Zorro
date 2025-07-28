@@ -100,6 +100,8 @@ public static class SignInUserQuery
             DefaultAuthenticationMethod(context, signInForm, user);
         }
 
+        context.TryLogElapsedTime(nameof(SignInUserQuery));
+
         return context.PassArg(user);
     }
 }

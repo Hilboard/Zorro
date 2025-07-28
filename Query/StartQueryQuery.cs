@@ -4,8 +4,8 @@ namespace Zorro.Query;
 
 public static class StartQueryQuery
 {
-    public static ArgQueryContext<object?> StartQuery(this ControllerBase controller)
+    public static ArgQueryContext<object?> StartQuery(this ControllerBase controller, ILogger? logger = null)
     {
-        return new QueryContext(controller.HttpContext, new Dictionary<string, bool?>()).PassArg<object?>(null);
+        return new QueryContext(controller.HttpContext, new InclusionContext(), logger).PassArg<object?>(null);
     }
 }

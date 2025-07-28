@@ -1,5 +1,6 @@
 using Zorro.Data;
 using Zorro.Middlewares;
+using Zorro.Query.Essentials.Auth;
 
 namespace Zorro.Query.Essentials.BucketRepository;
 
@@ -32,6 +33,8 @@ public static class DeleteQuery
         {
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
+
+        context.TryLogElapsedTime(nameof(DeleteQuery));
 
         return context;
     }

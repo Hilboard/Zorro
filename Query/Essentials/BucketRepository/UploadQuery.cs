@@ -24,6 +24,8 @@ public static class UploadQuery
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
 
+        context.TryLogElapsedTime(nameof(UploadQuery));
+
         return context;
     }
 }

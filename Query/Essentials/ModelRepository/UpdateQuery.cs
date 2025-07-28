@@ -34,6 +34,8 @@ public static class UpdateQuery
             throw new QueryException(statusCode: StatusCodes.Status400BadRequest);
         }
 
+        context.TryLogElapsedTime(nameof(UpdateQuery));
+
         return context.PassArg(entity);
     }
 
@@ -59,6 +61,8 @@ public static class UpdateQuery
         {
             throw new QueryException(statusCode: StatusCodes.Status400BadRequest);
         }
+
+        context.TryLogElapsedTime(nameof(UpdateQuery));
 
         return context.PassArg(entity);
     }

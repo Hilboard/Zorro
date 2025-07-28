@@ -33,7 +33,7 @@ public static class CoreExtensions
             queryableSet = queryableSet.Include(include);
         }
 
-        return queryableSet;
+        return queryableSet.AsSplitQuery();
     }
 
     public static int GetContentBasedHashCode<TKey, TValue>(

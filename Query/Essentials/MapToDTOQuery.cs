@@ -9,6 +9,8 @@ public static class MapToDTOQuery
     )
         where TEntity : class, IDTO<TDTO>
     {
-        return context.PassArg(context.arg.MapToDTO(context));
+        TDTO dto = context.arg.MapToDTO(context);
+        context.TryLogElapsedTime(nameof(MapToDTOQuery));
+        return context.PassArg(dto);
     }
 }

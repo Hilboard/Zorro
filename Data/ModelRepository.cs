@@ -1,7 +1,8 @@
-﻿global using InclusionContext = System.Collections.Generic.IDictionary<string, bool?>;
+﻿global using InclusionContext = System.Collections.Concurrent.ConcurrentDictionary<string, bool?>;
 
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 using Zorro.Data.Attributes;
@@ -17,7 +18,7 @@ public class ModelRepository<TEntity>
 {
     private DbSet<TEntity> set = default!;
 
-    private Dictionary<int, Inclusion> contextBasedInclusion = new();
+    private ConcurrentDictionary<int, Inclusion> contextBasedInclusion = new();
     public const int NULL_CONTEXT_INCLUSION_HASH = 0;
     public const int MAX_INCLUSION_DEPTH = 3;
 
@@ -28,35 +29,7 @@ public class ModelRepository<TEntity>
         this.context = context;
         this.set = set;
 
-        CalculateAndStoreInclusion(null, NULL_CONTEXT_INCLUSION_HASH, false);
-    }
-
-    public Inclusion CalculateAndStoreInclusion(
-        InclusionContext? inclusionContext,
-        int contextHash,
-        bool containsHash
-    )
-    {
-        Inclusion inclusion = CalculateInclusion(inclusionContext);
-
-        if (contextHash == NULL_CONTEXT_INCLUSION_HASH && !containsHash)
-        {
-            contextBasedInclusion.Add(NULL_CONTEXT_INCLUSION_HASH, inclusion);
-        }
-        else if (contextHash == NULL_CONTEXT_INCLUSION_HASH && containsHash)
-        {
-            contextBasedInclusion[NULL_CONTEXT_INCLUSION_HASH] = inclusion;
-        }
-        else if (contextHash != NULL_CONTEXT_INCLUSION_HASH && !containsHash)
-        {
-            contextBasedInclusion.Add(contextHash, inclusion);
-        }
-        else if (contextHash != NULL_CONTEXT_INCLUSION_HASH && containsHash)
-        {
-            contextBasedInclusion[contextHash] = inclusion;
-        }
-
-        return inclusion;
+        contextBasedInclusion.TryAdd(NULL_CONTEXT_INCLUSION_HASH, CalculateInclusion(null));
     }
 
     private Inclusion CalculateInclusion(InclusionContext? inclusionContext)
@@ -147,11 +120,7 @@ public class ModelRepository<TEntity>
     private Inclusion GetContextInclusion(InclusionContext? inclusionContext)
     {
         int contextHash = inclusionContext.GetContentBasedHashCode(NULL_CONTEXT_INCLUSION_HASH);
-
-        if (contextBasedInclusion.ContainsKey(contextHash))
-            return contextBasedInclusion[contextHash];
-        else
-            return CalculateAndStoreInclusion(inclusionContext, contextHash, false);
+        return contextBasedInclusion.GetOrAdd(contextHash, CalculateInclusion(inclusionContext));
     }
 
     public bool Save()
@@ -190,8 +159,9 @@ public class ModelRepository<TEntity>
 
     public bool Clear()
     {
-        set.RemoveRange(set);
-        return Save();
+        throw new NotImplementedException();
+        //set.RemoveRange(set);
+        //return Save();
     }
 
     public int Count()

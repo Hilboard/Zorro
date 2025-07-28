@@ -34,6 +34,8 @@ public static class AddQuery
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
 
+        context.TryLogElapsedTime(nameof(AddQuery));
+
         return context.PassArg(entity);
     }
 
@@ -62,6 +64,8 @@ public static class AddQuery
         {
             throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
         }
+
+        context.TryLogElapsedTime(nameof(AddQuery));
 
         return context;
     }

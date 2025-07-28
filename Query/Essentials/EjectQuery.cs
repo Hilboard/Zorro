@@ -1,3 +1,5 @@
+using Zorro.Query.Essentials.ModelRepository;
+
 namespace Zorro.Query.Essentials;
 
 public static class EjectQuery
@@ -8,6 +10,7 @@ public static class EjectQuery
     )
     {
         value = convertor.Invoke(context).arg;
+        context.TryLogElapsedTime(nameof(EjectQuery));
         return context.PassArg(value);
     }
 
@@ -17,6 +20,7 @@ public static class EjectQuery
     )
     {
         value = newValue;
+        context.TryLogElapsedTime(nameof(EjectQuery));
         return context.PassArg(value);
     }
 
@@ -26,6 +30,7 @@ public static class EjectQuery
     )
     {
         value = context.arg;
+        context.TryLogElapsedTime(nameof(EjectQuery));
         return context.PassArg(value);
     }
 }

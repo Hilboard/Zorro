@@ -8,14 +8,20 @@ public static class TryQuery
     )
         where TReturn : notnull
     {
+        TReturn returnValue; 
+
         try
         {
-            return expression.Invoke(context);
+            returnValue = expression.Invoke(context).arg;
         }
         catch 
         {
-            return context.PassArg(default(TReturn)!);
+            returnValue = default!;
         }
+
+        context.TryLogElapsedTime(nameof(TryQuery));
+
+        return context.PassArg(returnValue);
     }
 
     public static QueryContext Try<TEntry>(
@@ -25,11 +31,12 @@ public static class TryQuery
     {
         try
         {
-            return expression.Invoke(context);
+            expression.Invoke(context);
         }
-        catch
-        {
-            return context;
-        }
+        catch { }
+
+        context.TryLogElapsedTime(nameof(TryQuery));
+
+        return context;
     }
 }

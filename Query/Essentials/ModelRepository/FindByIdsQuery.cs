@@ -6,16 +6,16 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class FindByIdsQuery
 {
-    public static ArgQueryContext<IEnumerable<TEntity>> FindByIds<TEntity>(this QueryContext carriage, int[] ids)
+    public static ArgQueryContext<IEnumerable<TEntity>> FindByIds<TEntity>(this QueryContext context, int[] ids)
         where TEntity : class, IEntity
     {
-        var repo = carriage.GetService<ModelRepository<TEntity>>();
+        var repo = context.GetService<ModelRepository<TEntity>>();
         if (repo is null)
         {
             throw new Exception();
         }
 
-        var entities = repo.FindByIds(ids, carriage.inclusion);
+        var entities = repo.FindByIds(ids, context.inclusion);
         if (entities.Count() != ids.Length)
         {
             var idsNotFound = ids.Where(id => entities.Any(e => e.Id == id) is false);
@@ -23,6 +23,8 @@ public static class FindByIdsQuery
             throw new QueryException(statusCode: StatusCodes.Status404NotFound, fields: [errorField]);
         }
 
-        return carriage.PassArg(entities);
+        context.TryLogElapsedTime(nameof(FindByIdsQuery));
+
+        return context.PassArg(entities);
     }
 }

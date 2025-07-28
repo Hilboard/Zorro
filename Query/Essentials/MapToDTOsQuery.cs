@@ -10,6 +10,7 @@ public static class MapToDTOsQuery
         where TEntity : class, IDTO<TDTO>
     {
         var DTOs = context.arg.Select(e => e.MapToDTO(context));
+        context.TryLogElapsedTime(nameof(MapToDTOsQuery));
         return context.PassArg(DTOs);
     }
 
@@ -25,6 +26,7 @@ public static class MapToDTOsQuery
             context.arg.endIndex,
             context.arg.lastPage
         );
+        context.TryLogElapsedTime(nameof(MapToDTOsQuery));
         return context.PassArg(paginationObj);
     }
 }

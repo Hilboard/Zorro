@@ -12,6 +12,9 @@ public static class PaginateQuery
         var items = Paginate(context.arg, startIndex, pageSize, out int endIndex, out int totalCount, reverse);
         bool lastPage = endIndex == totalCount - 1;
         Pagination<TEntity> paginationObj = new Pagination<TEntity>(items, totalCount, endIndex, lastPage);
+
+        context.TryLogElapsedTime(nameof(PaginateQuery));
+
         return context.PassArg(paginationObj);
     }
 

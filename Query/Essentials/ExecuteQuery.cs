@@ -7,7 +7,9 @@ public static class ExecuteQuery
         Func<TEntry, TReturn> function
     )
     {
-        return context.PassArg(function(context.arg));
+        TReturn returnValue = function(context.arg);
+        context.TryLogElapsedTime(nameof(ExecuteQuery));
+        return context.PassArg(returnValue);
     }
 
     public static ArgQueryContext<TReturn> Execute<TReturn>(
@@ -15,7 +17,9 @@ public static class ExecuteQuery
         Func<TReturn> function
     )
     {
-        return context.PassArg(function());
+        TReturn returnValue = function();
+        context.TryLogElapsedTime(nameof(ExecuteQuery));
+        return context.PassArg(returnValue);
     }
 
     public static QueryContext Execute(
@@ -24,6 +28,7 @@ public static class ExecuteQuery
     )
     {
         function();
+        context.TryLogElapsedTime(nameof(ExecuteQuery));
         return context;
     }
 }

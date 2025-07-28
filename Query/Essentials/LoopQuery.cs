@@ -15,6 +15,8 @@ public static class LoopQuery
             results = results.Append(expression.Invoke(i, context).arg);
         }
 
+        context.TryLogElapsedTime(nameof(LoopQuery));
+
         return context.PassArg(results);
     }
 
@@ -29,6 +31,8 @@ public static class LoopQuery
         {
             expression.Invoke(i, context);
         }
+
+        context.TryLogElapsedTime(nameof(LoopQuery));
 
         return context;
     }
