@@ -47,11 +47,11 @@ public static class SignInUserQuery
         public bool? rememberMe { get; set; }
     }
 
-    public delegate void AuthenticationMethod(QueryContext context, IUserSignInForm signInForm, object user);
+    public delegate void AuthenticationMethod(HttpQueryContext context, IUserSignInForm signInForm, object user);
     public static AuthenticationMethod? DefaultAuthenticationMethod { get; set; } = null;
 
-    public static ArgQueryContext<TUser> SignInUser<TUser, TKey>(
-        this QueryContext context,
+    public static ArgHttpQueryContext<TUser> SignInUser<TUser, TKey>(
+        this HttpQueryContext context,
         IUserSignInForm signInForm
     )
         where TUser : IdentityUser<TKey>, IEntity, new()

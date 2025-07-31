@@ -2,8 +2,8 @@ namespace Zorro.Query.Essentials;
 
 public static class PaginateQuery
 {
-    public static ArgQueryContext<Pagination<TEntity>> Paginate<TEntity>(
-        this ArgQueryContext<IEnumerable<TEntity>> context,
+    public static ArgHttpQueryContext<Pagination<TEntity>> Paginate<TEntity>(
+        this ArgHttpQueryContext<IEnumerable<TEntity>> context,
         int startIndex,
         int pageSize,
         bool reverse = false

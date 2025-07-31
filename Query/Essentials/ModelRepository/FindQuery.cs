@@ -7,7 +7,7 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class FindQuery
 {
-    public static ArgQueryContext<TEntity> Find<TEntity>(this QueryContext context, Expression<Func<TEntity, bool>> predicate)
+    public static ArgHttpQueryContext<TEntity> Find<TEntity>(this HttpQueryContext context, Expression<Func<TEntity, bool>> predicate)
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();

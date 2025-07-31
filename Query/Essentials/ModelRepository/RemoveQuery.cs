@@ -6,7 +6,7 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class RemoveQuery
 {
-    public static QueryContext Remove<TEntity>(this ArgQueryContext<TEntity> context)
+    public static HttpQueryContext Remove<TEntity>(this ArgHttpQueryContext<TEntity> context)
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
@@ -27,7 +27,7 @@ public static class RemoveQuery
         return context;
     }
 
-    public static QueryContext Remove<TEntity>(this QueryContext context, int id)
+    public static HttpQueryContext Remove<TEntity>(this HttpQueryContext context, int id)
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();

@@ -6,7 +6,7 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class GetAllQuery
 {
-    public static ArgQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this QueryContext context)
+    public static ArgHttpQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this HttpQueryContext context)
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
@@ -22,7 +22,7 @@ public static class GetAllQuery
         return context.PassArg(items);
     }
 
-    public static ArgQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this QueryContext context, Expression<Func<TEntity, bool>> predicate)
+    public static ArgHttpQueryContext<IEnumerable<TEntity>> GetAll<TEntity>(this HttpQueryContext context, Expression<Func<TEntity, bool>> predicate)
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();

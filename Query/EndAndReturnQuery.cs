@@ -5,7 +5,7 @@ namespace Zorro.Query;
 public static class EndAndReturnQuery
 {
     public static IActionResult EndAndReturn<TEntry>(
-        this ArgQueryContext<TEntry> context
+        this ArgHttpQueryContext<TEntry> context
     )
     {
         if (context.arg is not null)
@@ -15,7 +15,7 @@ public static class EndAndReturnQuery
     }
 
     public static IActionResult EndAndReturn<TEntry>(
-        this ArgQueryContext<TEntry> context,
+        this ArgHttpQueryContext<TEntry> context,
         Func<TEntry, object?> convertor
     )
     {
@@ -25,12 +25,12 @@ public static class EndAndReturnQuery
             return new OkResult();
     }
 
-    public static IActionResult EndAndReturn(this QueryContext input, object? returnValue)
+    public static IActionResult EndAndReturn(this HttpQueryContext input, object? returnValue)
     {
         return new OkObjectResult(returnValue);
     }
 
-    public static IActionResult EndAndReturn(this QueryContext input)
+    public static IActionResult EndAndReturn(this HttpQueryContext input)
     {
         return new OkResult();
     }

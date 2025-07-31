@@ -2,10 +2,10 @@
 
 public static class ForEachQuery
 {
-    public static ArgQueryContext<IEnumerable<TReturn>> ForEach<TItem, TReturn>(
-        this QueryContext context,
+    public static ArgHttpQueryContext<IEnumerable<TReturn>> ForEach<TItem, TReturn>(
+        this HttpQueryContext context,
         IEnumerable<TItem> items,
-        Func<TItem, ArgQueryContext<TItem>, ArgQueryContext<TReturn>> expression
+        Func<TItem, ArgHttpQueryContext<TItem>, ArgHttpQueryContext<TReturn>> expression
     )
     {
         if (items.Count() == 0)
@@ -24,10 +24,10 @@ public static class ForEachQuery
         return context.PassArg(results);
     }
 
-    public static QueryContext ForEach<TItem>(
-        this QueryContext context,
+    public static HttpQueryContext ForEach<TItem>(
+        this HttpQueryContext context,
         IEnumerable<TItem> items,
-        Func<TItem, ArgQueryContext<TItem>, QueryContext> expression
+        Func<TItem, ArgHttpQueryContext<TItem>, HttpQueryContext> expression
     )
     {
         if (items.Count() == 0)

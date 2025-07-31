@@ -60,7 +60,7 @@ public static class SignUpUserQuery
         public required string confirmPassword { get; set; }
     }
 
-    public static ArgQueryContext<TUser> SignUpUser<TUser, TKey>(this QueryContext context, IUserSignUpForm signUpForm)
+    public static ArgHttpQueryContext<TUser> SignUpUser<TUser, TKey>(this HttpQueryContext context, IUserSignUpForm signUpForm)
         where TUser : IdentityUser<TKey>, IEntity, new()
         where TKey : IEquatable<TKey>
     {

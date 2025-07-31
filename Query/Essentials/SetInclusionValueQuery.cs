@@ -2,7 +2,7 @@ namespace Zorro.Query.Essentials;
 
 public static class SetInclusionValueQuery
 {
-    public static QueryContext SetInclusion(this QueryContext context, string variableName, bool? value = true)
+    public static HttpQueryContext SetInclusion(this HttpQueryContext context, string variableName, bool? value = true)
     {
         context.inclusion.TryAdd(variableName, value);
 

@@ -2,9 +2,9 @@ namespace Zorro.Query.Essentials;
 
 public static class TryQuery
 {
-    public static ArgQueryContext<TReturn> Try<TEntry, TReturn>(
-        this ArgQueryContext<TEntry> context,
-        Func<ArgQueryContext<TEntry>, ArgQueryContext<TReturn>> expression
+    public static ArgHttpQueryContext<TReturn> Try<TEntry, TReturn>(
+        this ArgHttpQueryContext<TEntry> context,
+        Func<ArgHttpQueryContext<TEntry>, ArgHttpQueryContext<TReturn>> expression
     )
         where TReturn : notnull
     {
@@ -24,9 +24,9 @@ public static class TryQuery
         return context.PassArg(returnValue);
     }
 
-    public static QueryContext Try<TEntry>(
-        this ArgQueryContext<TEntry> context,
-        Func<QueryContext, QueryContext> expression
+    public static HttpQueryContext Try<TEntry>(
+        this ArgHttpQueryContext<TEntry> context,
+        Func<HttpQueryContext, HttpQueryContext> expression
     )
     {
         try

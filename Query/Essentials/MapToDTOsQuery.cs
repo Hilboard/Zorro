@@ -4,8 +4,8 @@ namespace Zorro.Query.Essentials;
 
 public static class MapToDTOsQuery
 {
-    public static ArgQueryContext<IEnumerable<TDTO>> MapToDTOs<TEntity, TDTO>(
-        this ArgQueryContext<IEnumerable<TEntity>> context
+    public static ArgHttpQueryContext<IEnumerable<TDTO>> MapToDTOs<TEntity, TDTO>(
+        this ArgHttpQueryContext<IEnumerable<TEntity>> context
     )
         where TEntity : class, IDTO<TDTO>
     {
@@ -14,8 +14,8 @@ public static class MapToDTOsQuery
         return context.PassArg(DTOs);
     }
 
-    public static ArgQueryContext<PaginateQuery.Pagination<TDTO>> MapToDTOs<TEntity, TDTO>(
-        this ArgQueryContext<PaginateQuery.Pagination<TEntity>> context
+    public static ArgHttpQueryContext<PaginateQuery.Pagination<TDTO>> MapToDTOs<TEntity, TDTO>(
+        this ArgHttpQueryContext<PaginateQuery.Pagination<TEntity>> context
     )
         where TEntity : class, IDTO<TDTO>
     {

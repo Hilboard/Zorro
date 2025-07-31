@@ -4,5 +4,5 @@ namespace Zorro.Data.Interfaces;
 
 public interface IDTO<TDTO>
 {
-    public TDTO MapToDTO(QueryContext context);
+    public TDTO MapToDTO(HttpQueryContext context);
 }

@@ -5,8 +5,8 @@ namespace Zorro.Query.Essentials.BucketRepository;
 
 public static class UploadQuery
 {
-    public static QueryContext Upload<TBucketRepository, TClient, TBucket, TItem>(
-        this QueryContext context,
+    public static HttpQueryContext Upload<TBucketRepository, TClient, TBucket, TItem>(
+        this HttpQueryContext context,
         IFormFile file,
         string filePath
     )

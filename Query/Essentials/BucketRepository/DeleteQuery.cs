@@ -6,8 +6,8 @@ namespace Zorro.Query.Essentials.BucketRepository;
 
 public static class DeleteQuery
 {
-    public static QueryContext Delete<TBucketRepository, TClient, TBucket, TItem>(
-        this QueryContext context,
+    public static HttpQueryContext Delete<TBucketRepository, TClient, TBucket, TItem>(
+        this HttpQueryContext context,
         string filePath
     )
         where TBucketRepository : BucketRepository<TClient, TBucket, TItem>

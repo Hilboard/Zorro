@@ -2,10 +2,10 @@ namespace Zorro.Query.Essentials;
 
 public static class LoopQuery
 {
-    public static ArgQueryContext<IEnumerable<TReturn>> Loop<TReturn>(
-        this QueryContext context,
+    public static ArgHttpQueryContext<IEnumerable<TReturn>> Loop<TReturn>(
+        this HttpQueryContext context,
         int loopCount,
-        Func<int, QueryContext, ArgQueryContext<TReturn>> expression
+        Func<int, HttpQueryContext, ArgHttpQueryContext<TReturn>> expression
     )
     {
         IEnumerable<TReturn> results = Enumerable.Empty<TReturn>();
@@ -20,10 +20,10 @@ public static class LoopQuery
         return context.PassArg(results);
     }
 
-    public static QueryContext Loop(
-        this QueryContext context,
+    public static HttpQueryContext Loop(
+        this HttpQueryContext context,
         int loopCount,
-        Func<int, QueryContext, QueryContext> expression
+        Func<int, HttpQueryContext, HttpQueryContext> expression
     )
     {
         int i = 0;

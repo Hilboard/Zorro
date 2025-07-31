@@ -7,8 +7,8 @@ public static class GenerateIdQuery
 {
     private static readonly Random _rng = new Random();
 
-    public static ArgQueryContext<int> GenerateId<TEntity>(
-        this QueryContext context, 
+    public static ArgHttpQueryContext<int> GenerateId<TEntity>(
+        this HttpQueryContext context, 
         out int id
     )
         where TEntity : class, IEntity

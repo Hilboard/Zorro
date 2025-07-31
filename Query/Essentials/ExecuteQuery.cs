@@ -2,8 +2,8 @@ namespace Zorro.Query.Essentials;
 
 public static class ExecuteQuery
 {
-    public static ArgQueryContext<TReturn> Execute<TEntry, TReturn>(
-        this ArgQueryContext<TEntry> context,
+    public static ArgHttpQueryContext<TReturn> Execute<TEntry, TReturn>(
+        this ArgHttpQueryContext<TEntry> context,
         Func<TEntry, TReturn> function
     )
     {
@@ -12,8 +12,8 @@ public static class ExecuteQuery
         return context.PassArg(returnValue);
     }
 
-    public static ArgQueryContext<TReturn> Execute<TReturn>(
-        this QueryContext context,
+    public static ArgHttpQueryContext<TReturn> Execute<TReturn>(
+        this HttpQueryContext context,
         Func<TReturn> function
     )
     {
@@ -22,8 +22,8 @@ public static class ExecuteQuery
         return context.PassArg(returnValue);
     }
 
-    public static QueryContext Execute(
-        this QueryContext context,
+    public static HttpQueryContext Execute(
+        this HttpQueryContext context,
         Action function
     )
     {

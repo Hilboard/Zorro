@@ -7,7 +7,7 @@ namespace Zorro.Query.Essentials.Auth;
 
 public static class GetUserQuery
 {
-    public static ArgQueryContext<TUser> GetUser<TUser, TKey>(this QueryContext context)
+    public static ArgHttpQueryContext<TUser> GetUser<TUser, TKey>(this HttpQueryContext context)
         where TUser : IdentityUser<TKey>, IEntity, new()
         where TKey : IEquatable<TKey>, IParsable<TKey>
     {

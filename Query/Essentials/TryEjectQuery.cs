@@ -2,9 +2,9 @@ namespace Zorro.Query.Essentials;
 
 public static class TryEjectQuery
 {
-    public static ArgQueryContext<TEject> TryEject<TEject>(
-        this QueryContext context,
-        Func<QueryContext, ArgQueryContext<TEject>> convertor, out TEject value
+    public static ArgHttpQueryContext<TEject> TryEject<TEject>(
+        this HttpQueryContext context,
+        Func<HttpQueryContext, ArgHttpQueryContext<TEject>> convertor, out TEject value
     )
         where TEject : notnull
     {
@@ -21,8 +21,8 @@ public static class TryEjectQuery
         return context.PassArg(value);
     }
 
-    public static ArgQueryContext<TEject> TryEject<TEject>(
-        this QueryContext context,
+    public static ArgHttpQueryContext<TEject> TryEject<TEject>(
+        this HttpQueryContext context,
         TEject newValue, out TEject value
     )
         where TEject : notnull
@@ -40,8 +40,8 @@ public static class TryEjectQuery
         return context.PassArg(value);
     }
 
-    public static ArgQueryContext<TEject> TryEject<TEject>(
-        this ArgQueryContext<TEject> context,
+    public static ArgHttpQueryContext<TEject> TryEject<TEject>(
+        this ArgHttpQueryContext<TEject> context,
         out TEject value
     )
         where TEject : notnull

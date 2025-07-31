@@ -4,8 +4,8 @@ namespace Zorro.Query.Essentials;
 
 public static class MapToDTOQuery
 {
-    public static ArgQueryContext<TDTO> MapToDTO<TEntity, TDTO>(
-        this ArgQueryContext<TEntity> context
+    public static ArgHttpQueryContext<TDTO> MapToDTO<TEntity, TDTO>(
+        this ArgHttpQueryContext<TEntity> context
     )
         where TEntity : class, IDTO<TDTO>
     {

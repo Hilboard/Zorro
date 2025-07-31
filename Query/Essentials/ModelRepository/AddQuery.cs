@@ -6,7 +6,7 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class AddQuery
 {
-    public static ArgQueryContext<TEntity> Add<TEntity, TForm>(this QueryContext context, TForm form, int? id = null)
+    public static ArgHttpQueryContext<TEntity> Add<TEntity, TForm>(this HttpQueryContext context, TForm form, int? id = null)
         where TEntity : class, IEntity, IAddable<TForm>, new()
         where TForm : struct
     {
@@ -39,7 +39,7 @@ public static class AddQuery
         return context.PassArg(entity);
     }
 
-    public static QueryContext Add<TEntity, TForm>(this QueryContext context, TForm[] forms)
+    public static HttpQueryContext Add<TEntity, TForm>(this HttpQueryContext context, TForm[] forms)
         where TEntity : class, IEntity, IAddable<TForm>, new()
         where TForm : struct
     {

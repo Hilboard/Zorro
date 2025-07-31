@@ -6,7 +6,7 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class FindByIdsQuery
 {
-    public static ArgQueryContext<IEnumerable<TEntity>> FindByIds<TEntity>(this QueryContext context, int[] ids)
+    public static ArgHttpQueryContext<IEnumerable<TEntity>> FindByIds<TEntity>(this HttpQueryContext context, int[] ids)
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();

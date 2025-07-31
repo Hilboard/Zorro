@@ -2,10 +2,10 @@ namespace Zorro.Query.Essentials;
 
 public static class IfQuery
 {
-    public static QueryContext If(
-        this QueryContext context,
+    public static HttpQueryContext If(
+        this HttpQueryContext context,
         bool condition,
-        Action<QueryContext> expression
+        Action<HttpQueryContext> expression
     )
     {
         if (condition)
@@ -18,10 +18,10 @@ public static class IfQuery
         return context;
     }
 
-    public static QueryContext If<TEntry>(
-        this ArgQueryContext<TEntry> context,
+    public static HttpQueryContext If<TEntry>(
+        this ArgHttpQueryContext<TEntry> context,
         Func<TEntry?, bool> predicate,
-        Action<ArgQueryContext<TEntry>> expression
+        Action<ArgHttpQueryContext<TEntry>> expression
     )
     {
         if (predicate(context.arg))
