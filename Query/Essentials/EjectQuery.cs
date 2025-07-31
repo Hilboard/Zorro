@@ -1,5 +1,3 @@
-using Zorro.Query.Essentials.ModelRepository;
-
 namespace Zorro.Query.Essentials;
 
 public static class EjectQuery

@@ -33,6 +33,7 @@ public class QueryContext
 
     public void TryLogElapsedTime(string queryName)
     {
+        _stopwatch.Stop();
         logger?.LogInformation($"Zorro query {queryName} executed: {_stopwatch.ElapsedMilliseconds} ms.");
     }
 
