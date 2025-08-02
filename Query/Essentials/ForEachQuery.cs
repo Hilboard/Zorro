@@ -20,7 +20,6 @@ public static class ForEachQuery
         }
 
         context.TryLogElapsedTime(nameof(ForEachQuery));
-
         return context.PassArg(results);
     }
 
@@ -41,7 +40,6 @@ public static class ForEachQuery
         }
 
         context.TryLogElapsedTime(nameof(ForEachQuery));
-
         return context;
     }
 }

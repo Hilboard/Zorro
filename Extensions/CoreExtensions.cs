@@ -19,7 +19,7 @@ public static class CoreExtensions
     }
 
     public static IQueryable<TModel> NoTrackingInclude<TModel>(
-        this DbSet<TModel> set,
+        this IQueryable<TModel> set,
         string[] inclusion
     )
         where TModel : class, IEntity

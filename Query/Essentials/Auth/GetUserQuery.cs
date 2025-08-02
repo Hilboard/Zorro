@@ -31,7 +31,6 @@ public static class GetUserQuery
         }
 
         context.TryLogElapsedTime(nameof(GetUserQuery));
-
         return context.PassArg(user);
     }
 }

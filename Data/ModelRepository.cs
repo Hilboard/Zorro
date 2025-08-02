@@ -1,5 +1,4 @@
 ﻿global using InclusionContext = System.Collections.Concurrent.ConcurrentDictionary<string, bool?>;
-
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -129,31 +128,50 @@ public class ModelRepository<TEntity>
         return stateEntries > 0;
     }
 
-    public TEntity? Add(TEntity instance, InclusionContext? inclusionContext = null)
+    public TEntity? Add(TEntity entity, InclusionContext? inclusionContext = null)
     {
-        var entry = set.Add(instance);
-        return Save() ? FindById(entry.Entity.Id, inclusionContext) : null;
+        using var transaction = context.Database.BeginTransaction();
+
+        var entry = set.Add(entity);
+        TEntity? returnEntity;
+        if (inclusionContext is null || inclusionContext.Count == 0)
+        {
+            returnEntity = Save() ? entry.Entity : null;
+        }
+        else
+            returnEntity = Save() ? FindById(entry.Entity.Id, inclusionContext) : null;
+
+        transaction.Commit();
+        return returnEntity;
     }
 
-    public bool AddRange(TEntity[] instances, InclusionContext? inclusionContext = null)
+    public bool AddRange(TEntity[] entities, InclusionContext? inclusionContext = null)
     {
-        set.AddRange(instances);
-        return Save();
+        using var transaction = context.Database.BeginTransaction();
+
+        set.AddRange(entities);
+        bool result = Save();
+
+        transaction.Commit();
+        return result;
     }
 
-    public bool Update(ref TEntity instance, InclusionContext? inclusionContext = null)
+    public bool Update(ref TEntity entity, InclusionContext? inclusionContext = null)
     {
-        var entry = set.Update(instance);
+        var entry = set.Update(entity);
         bool updateStatus = Save();
 
-        instance = FindById(entry.Entity.Id, inclusionContext)!;
+        if (inclusionContext is null || inclusionContext.Count == 0)
+            entity = entry.Entity;
+        else
+            entity = FindById(entry.Entity.Id, inclusionContext)!;
 
         return updateStatus;
     }
 
-    public bool Remove(TEntity instance)
+    public bool Remove(TEntity entity)
     {
-        set.Remove(instance);
+        set.Remove(entity);
         return Save();
     }
 
@@ -169,12 +187,37 @@ public class ModelRepository<TEntity>
         return set.Count();
     }
 
+    public IEnumerable<TPartialEntity> GetAll<TPartialEntity>(
+        Expression<Func<TEntity, TPartialEntity>> selector,
+        InclusionContext? inclusionContext = null
+    )
+    {
+        return set
+            .NoTrackingInclude(GetContextInclusion(inclusionContext))
+            .Select(selector)
+            .ToList();
+    }
+
     public IEnumerable<TEntity> GetAll(
         InclusionContext? inclusionContext = null
     )
     {
         return set
             .NoTrackingInclude(GetContextInclusion(inclusionContext))
+            .ToList();
+    }
+
+    public IEnumerable<TPartialEntity> GetAll<TPartialEntity>(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TPartialEntity>> selector,
+        InclusionContext? inclusionContext = null
+    )
+        where TPartialEntity : class, IEntity
+    {
+        return set
+            .NoTrackingInclude(GetContextInclusion(inclusionContext))
+            .Where(predicate)
+            .Select(selector)
             .ToList();
     }
 
@@ -189,6 +232,20 @@ public class ModelRepository<TEntity>
             .ToList();
     }
 
+    public TPartialEntity? Find<TPartialEntity>(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TPartialEntity>> selector,
+        InclusionContext? inclusionContext = null
+    )
+        where TPartialEntity : class, IEntity
+    {
+        return set
+            .NoTrackingInclude(GetContextInclusion(inclusionContext))
+            .Where(predicate)
+            .Select(selector)
+            .FirstOrDefault();
+    }
+
     public TEntity? Find(
         Expression<Func<TEntity, bool>> predicate,
         InclusionContext? inclusionContext = null
@@ -197,6 +254,19 @@ public class ModelRepository<TEntity>
         return set
             .NoTrackingInclude(GetContextInclusion(inclusionContext))
             .FirstOrDefault(predicate);
+    }
+
+    public TPartialEntity? FindById<TPartialEntity>(
+        int id,
+        Expression<Func<TEntity, TPartialEntity>> selector,
+        InclusionContext? inclusionContext = null
+    )
+        where TPartialEntity : class, IEntity
+    {
+        return set
+            .NoTrackingInclude(GetContextInclusion(inclusionContext))
+            .Select(selector)
+            .FirstOrDefault(item => item.Id == id);
     }
 
     public TEntity? FindById(
@@ -209,6 +279,20 @@ public class ModelRepository<TEntity>
             .FirstOrDefault(item => item.Id == id);
     }
 
+    public IEnumerable<TPartialEntity> FindByIds<TPartialEntity>(
+        IList<int> ids,
+        Expression<Func<TEntity, TPartialEntity>> selector,
+        InclusionContext? inclusionContext = null
+    )
+        where TPartialEntity : class, IEntity
+    {
+        return set
+            .NoTrackingInclude(GetContextInclusion(inclusionContext))
+            .Select(selector)
+            .Where(item => ids.Contains(item.Id))
+            .ToList();
+    }
+
     public IEnumerable<TEntity> FindByIds(
         IList<int> ids,
         InclusionContext? inclusionContext = null
@@ -218,5 +302,14 @@ public class ModelRepository<TEntity>
             .NoTrackingInclude(GetContextInclusion(inclusionContext))
             .Where(item => ids.Contains(item.Id))
             .ToList();
+    }
+
+    public bool HasId(
+        int id
+    )
+    {
+        return set
+            .Select(e => new { e.Id })
+            .Any(e => e.Id == id);
     }
 }

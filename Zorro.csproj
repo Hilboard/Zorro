@@ -20,12 +20,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-    <Folder Include="Enums\" />
-	<Folder Include="Extensions\" />
-	<Folder Include="Middlewares\" />
-	<Folder Include="Secrets\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

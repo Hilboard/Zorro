@@ -23,15 +23,14 @@ public class HttpQueryContext
     public ContextScopeGetter<IServiceProvider> serviceProviderGetter = DefaultServiceProviderGetter;
     protected IServiceProvider ServiceProvider => serviceProviderGetter(this);
 
-    private readonly ConcurrentDictionary<Type, object> _serviceCache = new();
-    private readonly Stopwatch _stopwatch;
+    private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
+    private ConcurrentDictionary<Type, object> _serviceCache { get; init; } = new();
 
     public HttpQueryContext(HttpContext http, InclusionContext inclusion, ILogger? logger = null)
     {
-        this.http = http;
         this.inclusion = inclusion;
+        this.http = http;
         this.logger = logger;
-        _stopwatch = Stopwatch.StartNew();
     }
 
     public TService GetService<TService>() where TService : notnull
@@ -42,14 +41,20 @@ public class HttpQueryContext
     public void TryLogElapsedTime(string queryName)
     {
         _stopwatch.Stop();
-        logger?.LogInformation($"Zorro query {queryName} executed: {_stopwatch.ElapsedMilliseconds} ms.");
+        logger?.LogInformation($"Executed query {queryName} in {_stopwatch.ElapsedMilliseconds}ms");
+        _stopwatch.Restart();
     }
 
     public ArgHttpQueryContext<TOutArg> PassArg<TOutArg>(TOutArg outArg)
     {
         return new ArgHttpQueryContext<TOutArg>(outArg, http, inclusion)
         {
-            logger = logger
+            logger = logger,
+            userGetter = userGetter,
+            requestCookiesGetter = requestCookiesGetter,
+            responseCookiesGetter = responseCookiesGetter,
+            serviceProviderGetter = serviceProviderGetter,
+            _serviceCache = _serviceCache,
         };
     }
 

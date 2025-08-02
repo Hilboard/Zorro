@@ -139,7 +139,6 @@ public static class SignUpUserQuery
         user = userRepo.Find(u => u.Id.Equals(user.Id))!;
 
         context.TryLogElapsedTime(nameof(SignUpUserQuery));
-
         return context.PassArg(user);
     }
 }

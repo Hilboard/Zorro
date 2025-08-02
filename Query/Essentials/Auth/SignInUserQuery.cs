@@ -101,7 +101,6 @@ public static class SignInUserQuery
         }
 
         context.TryLogElapsedTime(nameof(SignInUserQuery));
-
         return context.PassArg(user);
     }
 }

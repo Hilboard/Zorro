@@ -11,10 +11,6 @@ public static class UpdateQuery
         where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
         repo.context.ChangeTracker.Clear();
 
         TEntity? entity = repo.FindById(id);
@@ -35,7 +31,6 @@ public static class UpdateQuery
         }
 
         context.TryLogElapsedTime(nameof(UpdateQuery));
-
         return context.PassArg(entity);
     }
 
@@ -44,10 +39,6 @@ public static class UpdateQuery
         where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
         repo.context.ChangeTracker.Clear();
 
         TEntity entity = context.arg;
@@ -63,7 +54,6 @@ public static class UpdateQuery
         }
 
         context.TryLogElapsedTime(nameof(UpdateQuery));
-
         return context.PassArg(entity);
     }
 }

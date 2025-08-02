@@ -17,3 +17,4 @@ Wrapper around ASP.NET Framework introducing unique way of interconnecting queri
 | [Zorro.MinIO](https://github.com/Hilboard/Zorro.Modules.MinIO)    | File Storage    | Development |
 | [Zorro.Infisical](https://github.com/Hilboard/Zorro.Modules.Infisical) | Secrets Manager | Development |
 | [Zorro.JwtBearer](https://github.com/Hilboard/Zorro.Modules.JwtBearer) | Authorization   | Development |
+| [Zorro.SignalR](https://github.com/Hilboard/Zorro.Modules.SignalR) | WebSockets   | Development |

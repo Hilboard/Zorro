@@ -14,7 +14,6 @@ public static class PaginateQuery
         Pagination<TEntity> paginationObj = new Pagination<TEntity>(items, totalCount, endIndex, lastPage);
 
         context.TryLogElapsedTime(nameof(PaginateQuery));
-
         return context.PassArg(paginationObj);
     }
 

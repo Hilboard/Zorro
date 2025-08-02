@@ -4,7 +4,8 @@ public static class TryEjectQuery
 {
     public static ArgHttpQueryContext<TEject> TryEject<TEject>(
         this HttpQueryContext context,
-        Func<HttpQueryContext, ArgHttpQueryContext<TEject>> convertor, out TEject value
+        Func<HttpQueryContext, ArgHttpQueryContext<TEject>> convertor, 
+        out TEject value
     )
         where TEject : notnull
     {
@@ -23,7 +24,8 @@ public static class TryEjectQuery
 
     public static ArgHttpQueryContext<TEject> TryEject<TEject>(
         this HttpQueryContext context,
-        TEject newValue, out TEject value
+        TEject newValue, 
+        out TEject value
     )
         where TEject : notnull
     {

@@ -13,10 +13,6 @@ public static class DeleteQuery
         where TBucketRepository : BucketRepository<TClient, TBucket, TItem>
     {
         var bucketRepo = context.GetService<TBucketRepository>();
-        if (bucketRepo is null)
-        {
-            throw new Exception();
-        }
 
         var hasFile = bucketRepo.HasAsync(filePath).GetAwaiter().GetResult();
         if (hasFile is null)
@@ -35,7 +31,6 @@ public static class DeleteQuery
         }
 
         context.TryLogElapsedTime(nameof(DeleteQuery));
-
         return context;
     }
 }

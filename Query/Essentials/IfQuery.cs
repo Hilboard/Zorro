@@ -14,7 +14,6 @@ public static class IfQuery
         }
 
         context.TryLogElapsedTime(nameof(IfQuery));
-
         return context;
     }
 
@@ -30,7 +29,6 @@ public static class IfQuery
         }
 
         context.TryLogElapsedTime(nameof(IfQuery));
-
         return context;
     }
 }

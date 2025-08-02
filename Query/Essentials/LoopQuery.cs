@@ -16,7 +16,6 @@ public static class LoopQuery
         }
 
         context.TryLogElapsedTime(nameof(LoopQuery));
-
         return context.PassArg(results);
     }
 
@@ -33,7 +32,6 @@ public static class LoopQuery
         }
 
         context.TryLogElapsedTime(nameof(LoopQuery));
-
         return context;
     }
 }

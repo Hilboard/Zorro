@@ -11,10 +11,6 @@ public static class AddQuery
         where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
         repo.context.ChangeTracker.Clear();
 
         TEntity? entity = new();
@@ -35,7 +31,6 @@ public static class AddQuery
         }
 
         context.TryLogElapsedTime(nameof(AddQuery));
-
         return context.PassArg(entity);
     }
 
@@ -44,10 +39,6 @@ public static class AddQuery
         where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
         repo.context.ChangeTracker.Clear();
 
         var entities = forms.Select(f =>
@@ -66,7 +57,6 @@ public static class AddQuery
         }
 
         context.TryLogElapsedTime(nameof(AddQuery));
-
         return context;
     }
 }

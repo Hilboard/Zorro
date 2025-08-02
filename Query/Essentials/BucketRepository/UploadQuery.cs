@@ -13,10 +13,6 @@ public static class UploadQuery
         where TBucketRepository : BucketRepository<TClient, TBucket, TItem>
     {
         var bucketRepo = context.GetService<TBucketRepository>();
-        if (bucketRepo is null)
-        {
-            throw new Exception();
-        }
 
         var uploadStatus = bucketRepo.UploadAsync(file, filePath).GetAwaiter().GetResult();
         if (uploadStatus is false)
@@ -25,7 +21,6 @@ public static class UploadQuery
         }
 
         context.TryLogElapsedTime(nameof(UploadQuery));
-
         return context;
     }
 }

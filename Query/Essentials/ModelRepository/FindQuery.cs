@@ -7,14 +7,13 @@ namespace Zorro.Query.Essentials.ModelRepository;
 
 public static class FindQuery
 {
-    public static ArgHttpQueryContext<TEntity> Find<TEntity>(this HttpQueryContext context, Expression<Func<TEntity, bool>> predicate)
+    public static ArgHttpQueryContext<TEntity> Find<TEntity>(
+        this HttpQueryContext context, 
+        Expression<Func<TEntity, bool>> predicate
+    )
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
 
         var entity = repo.Find(predicate, context.inclusion);
         if (entity is null)
@@ -23,7 +22,26 @@ public static class FindQuery
         }
 
         context.TryLogElapsedTime(nameof(FindQuery));
+        return context.PassArg(entity);
+    }
 
+    public static ArgHttpQueryContext<TPartialEntity> Find<TEntity, TPartialEntity>(
+        this HttpQueryContext context, 
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TPartialEntity>> selector
+    )
+        where TEntity : class, IEntity
+        where TPartialEntity : class, IEntity
+    {
+        var repo = context.GetService<ModelRepository<TEntity>>();
+
+        var entity = repo.Find(predicate, selector, context.inclusion);
+        if (entity is null)
+        {
+            throw new QueryException(statusCode: StatusCodes.Status404NotFound);
+        }
+
+        context.TryLogElapsedTime(nameof(FindQuery));
         return context.PassArg(entity);
     }
 }

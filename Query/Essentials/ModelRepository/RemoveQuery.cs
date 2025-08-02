@@ -10,10 +10,6 @@ public static class RemoveQuery
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
         repo.context.ChangeTracker.Clear();
 
         var removeStatus = repo.Remove(context.arg);
@@ -31,10 +27,6 @@ public static class RemoveQuery
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
         repo.context.ChangeTracker.Clear();
 
         var entity = repo.FindById(id);

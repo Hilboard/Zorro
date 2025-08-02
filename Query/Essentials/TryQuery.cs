@@ -20,7 +20,6 @@ public static class TryQuery
         }
 
         context.TryLogElapsedTime(nameof(TryQuery));
-
         return context.PassArg(returnValue);
     }
 
@@ -36,7 +35,6 @@ public static class TryQuery
         catch { }
 
         context.TryLogElapsedTime(nameof(TryQuery));
-
         return context;
     }
 }

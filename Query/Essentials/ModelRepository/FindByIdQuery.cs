@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Zorro.Data;
 using Zorro.Data.Interfaces;
 using Zorro.Middlewares;
@@ -10,10 +11,6 @@ public static class FindByIdQuery
         where TEntity : class, IEntity
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
-        if (repo is null)
-        {
-            throw new Exception();
-        }
 
         var entity = repo.FindById(id, context.inclusion);
         if (entity is null)
@@ -22,7 +19,26 @@ public static class FindByIdQuery
         }
 
         context.TryLogElapsedTime(nameof(FindByIdQuery));
+        return context.PassArg(entity);
+    }
 
+    public static ArgHttpQueryContext<TPartialEntity> FindById<TEntity, TPartialEntity>(
+        this HttpQueryContext context, 
+        int id,
+        Expression<Func<TEntity, TPartialEntity>> selector
+    )
+        where TEntity : class, IEntity
+        where TPartialEntity : class, IEntity
+    {
+        var repo = context.GetService<ModelRepository<TEntity>>();
+
+        var entity = repo.FindById(id, selector, context.inclusion);
+        if (entity is null)
+        {
+            throw new QueryException(statusCode: StatusCodes.Status404NotFound);
+        }
+
+        context.TryLogElapsedTime(nameof(FindByIdQuery));
         return context.PassArg(entity);
     }
 }
