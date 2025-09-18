@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<PackageId>Zorro</PackageId>
-	<Version>0.1.7</Version>
+	<Version>0.1.8</Version>
 	<Authors>Artem</Authors>
 	<Authors>Hilboard</Authors>
 	<Description>Collection of tools and wrapper around ASP.NET Framework</Description>
