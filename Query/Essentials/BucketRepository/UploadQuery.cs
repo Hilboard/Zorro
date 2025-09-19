@@ -23,4 +23,23 @@ public static class UploadQuery
         context.TryLogElapsedTime(nameof(UploadQuery));
         return context;
     }
+
+    public static HttpQueryContext Upload<TBucketRepository, TClient, TBucket, TItem>(
+        this HttpQueryContext context,
+        string requestUri,
+        string filePath
+    )
+        where TBucketRepository : BucketRepository<TClient, TBucket, TItem>
+    {
+        var bucketRepo = context.GetService<TBucketRepository>();
+
+        var uploadStatus = bucketRepo.UploadAsync(requestUri, filePath).GetAwaiter().GetResult();
+        if (uploadStatus is false)
+        {
+            throw new QueryException(statusCode: StatusCodes.Status500InternalServerError);
+        }
+
+        context.TryLogElapsedTime(nameof(UploadQuery));
+        return context;
+    }
 }

@@ -15,9 +15,9 @@ public abstract class BucketRepository<TClient, TBucket, TItem>
 
     public abstract Task<bool> UploadAsync(IFormFile file, string path);
 
-    public abstract Task<bool> UploadAsync(Stream fileStream, string path, string contentType);
+    public abstract Task<bool> UploadAsync(Stream fileStream, string path, long contentLength, string contentType);
 
-    public abstract Task<bool> UploadAsync(string streamUri, string path, string contentType);
+    public abstract Task<bool> UploadAsync(string streamUri, string path);
 
     public abstract Task<bool> DeleteAsync(string path);
 
