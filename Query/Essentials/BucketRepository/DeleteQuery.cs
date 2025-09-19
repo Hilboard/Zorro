@@ -1,6 +1,5 @@
 using Zorro.Data;
 using Zorro.Middlewares;
-using Zorro.Query.Essentials.Auth;
 
 namespace Zorro.Query.Essentials.BucketRepository;
 
