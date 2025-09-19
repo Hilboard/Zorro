@@ -1,4 +1,4 @@
-using static Zorro.ZorroDI;
+using static Zorro.ZorroSetup;
 
 namespace Zorro.Secrets;
 

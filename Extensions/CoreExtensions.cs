@@ -7,7 +7,7 @@ public static class CoreExtensions
 {
     public static string ToReabableValue(this Enums.Environment environment)
     {
-        return ZorroDI.ENVIRONMENT_VALUES[(int)environment];
+        return ZorroSetup.ENVIRONMENT_VALUES[(int)environment];
     }
 
     public static TValue GetValueByEnvironment<TValue>(

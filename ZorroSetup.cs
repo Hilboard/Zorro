@@ -2,7 +2,7 @@
 
 namespace Zorro;
 
-public static class ZorroDI
+public static class ZorroSetup
 {
     public static WebApplicationBuilder? builder { get; private set; }
     public static WebApplication? application { get; private set; }
