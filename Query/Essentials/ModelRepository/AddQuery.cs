@@ -8,7 +8,6 @@ public static class AddQuery
 {
     public static ArgHttpQueryContext<TEntity> Add<TEntity, TForm>(this HttpQueryContext context, TForm form, int? id = null)
         where TEntity : class, IEntity, IAddable<TForm>, new()
-        where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
         repo.context.ChangeTracker.Clear();
@@ -36,7 +35,6 @@ public static class AddQuery
 
     public static HttpQueryContext Add<TEntity, TForm>(this HttpQueryContext context, TForm[] forms)
         where TEntity : class, IEntity, IAddable<TForm>, new()
-        where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
         repo.context.ChangeTracker.Clear();

@@ -8,7 +8,6 @@ public static class UpdateQuery
 {
     public static ArgHttpQueryContext<TEntity> Update<TEntity, TForm>(this HttpQueryContext context, int id, TForm form)
         where TEntity : class, IEntity, IUpdateable<TForm>
-        where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
         repo.context.ChangeTracker.Clear();
@@ -36,7 +35,6 @@ public static class UpdateQuery
 
     public static ArgHttpQueryContext<TEntity> Update<TEntity, TForm>(this ArgHttpQueryContext<TEntity> context, TForm form)
         where TEntity : class, IEntity, IUpdateable<TForm>
-        where TForm : struct
     {
         var repo = context.GetService<ModelRepository<TEntity>>();
         repo.context.ChangeTracker.Clear();
