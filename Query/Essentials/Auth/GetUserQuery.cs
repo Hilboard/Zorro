@@ -24,7 +24,7 @@ public static class GetUserQuery
         }
 
         var userRepo = context.GetService<ModelRepository<TUser>>();
-        var user = userRepo.Find(u => u.Id.Equals(userId));
+        var user = userRepo.Find(u => u.Id.Equals(userId), context.inclusion);
         if (user is null)
         {
             throw new Exception();
